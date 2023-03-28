@@ -1,24 +1,27 @@
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import {
+  createBrowserRouter,
+  RouterProvider
+} from 'react-router-dom';
+import React from 'react';
+import Navbar from './component/Navbar';
+import ErrorPage from './component/ErrorPage';
 
 function App() {
 
-
-  useEffect(() => {
-    fetch('http://localhost:8181/api/card/live')
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-     })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [])
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Navbar />,
+      errorElement: <ErrorPage />,
+    },
+  ]);
 
   return (
-    <div className="App">
+    <div>
+      <RouterProvider router={router} />
     </div>
-  );
+  )
 }
 
 export default App;
