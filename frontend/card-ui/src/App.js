@@ -6,6 +6,7 @@ import {
 import React from 'react';
 import Navbar from './component/Navbar';
 import ErrorPage from './component/ErrorPage';
+import CardSpecification from './component/CardSpecification';
 
 function App() {
 
@@ -14,6 +15,12 @@ function App() {
       path: "/",
       element: <Navbar />,
       errorElement: <ErrorPage />,
+      children: [
+        {
+          path: "card/:cardId",
+          element: <CardSpecification />,
+        },
+      ],
     },
   ]);
 

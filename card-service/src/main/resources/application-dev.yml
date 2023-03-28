@@ -4,6 +4,15 @@ server:
 spring:
   application:
     name: card-service
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:postgresql://localhost:5432/card-service
+    driver-class-name: org.postgresql.Driver
+    username: mateuszuran
+    password: password
+
 eureka:
   client:
     serviceUrl:

@@ -18,8 +18,12 @@ spring:
         corsConfigurations:
           '[/**]':
             allowedOrigins: "http://localhost:3000"
+            allowedHeaders:
+              - content-type
             allowedMethods:
               - GET
+              - POST
+              - DELETE
       routes:
         - id: card-service
           uri: lb://card-service
