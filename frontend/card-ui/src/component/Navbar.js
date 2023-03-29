@@ -1,9 +1,6 @@
 
-import React, { useState, useEffect, useRef } from 'react';
-import TextField from '@mui/material/TextField'
+import React, { useState, useEffect } from 'react';
 import Switch from '@mui/material/Switch';
-import IconButton from '@mui/material/IconButton';
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
@@ -13,7 +10,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { Button } from '@mui/material';
 
 function Navbar(props) {
-    const { token, isLogin, username } = props;
+    const { isLogin, username } = props;
     const { keycloak } = useKeycloak();
 
     const [darkMode, setDarkMode] = useState(false);
@@ -57,11 +54,10 @@ function Navbar(props) {
                     </div>
                 </div>
                 <Divider sx={{ borderBottomWidth: 2, marginBottom: 0 }} />
-                {isLogin && token &&
+                {isLogin && 
                     <CardsList
                         user={username}
                         mode={darkMode}
-                        token={token}
                     />
                 }
             </ThemeProvider>

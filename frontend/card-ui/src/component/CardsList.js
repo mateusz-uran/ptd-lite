@@ -15,7 +15,9 @@ import Backdrop from '@mui/material/Backdrop';
 import { ListItemButton } from '@mui/material';
 
 import { getCurrentDay, getCurrentMonth, getCurrentYear } from '../utility/utils';
-import CardService from '../services/CardService';
+
+import useCardService from '../services/CardServiceHook';
+
 import CardCalendar from './CardCalendar';
 import AlertDialog from './AlertDialog';
 import CustomSnackbar from './CustomSnackbar';
@@ -23,7 +25,8 @@ import GeneratePDF from './GeneratePDF';
 
 function CardsList(props) {
     const navigate = useNavigate();
-    const { user, mode, token } = props;
+    const { getCards, createCard, deleteCard } = useCardService();
+    const { user, mode } = props;
 
     const [year, setYear] = useState(getCurrentYear());
     const [month, setMonth] = useState(getCurrentMonth());
@@ -54,7 +57,7 @@ function CardsList(props) {
 
     const retrieveCardByUserAndDate = () => {
         setOpenBackdrop(true);
-        CardService.getCardByUserAndMonth(user, year, month, token)
+        getCards(user, year, month)
             .then(response => {
                 setCardsList(response.data);
                 setOpenBackdrop(false);
@@ -82,7 +85,7 @@ function CardsList(props) {
                 number: values.number,
                 username: user
             }
-            CardService.create(cardPayload, year, month, day, token)
+            createCard(cardPayload, year, month, day)
                 .then(response => {
                     setCardsList(cardsList => [...cardsList, response.data]);
                     resetForm();
@@ -110,7 +113,7 @@ function CardsList(props) {
     }
 
     const handleDelete = (id) => {
-        CardService.deleteCard(id)
+        deleteCard(id)
             .then(() => {
                 setCardsList(cardsList.filter(card => card.id !== id));
                 setRenderCardInfoHandler(false);

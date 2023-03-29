@@ -1,7 +1,9 @@
 package io.github.mateuszuran.ptdlite.controller;
 
-import io.github.mateuszuran.ptdlite.dto.CardRequest;
-import io.github.mateuszuran.ptdlite.dto.CardResponse;
+import io.github.mateuszuran.ptdlite.dto.request.CardRequest;
+import io.github.mateuszuran.ptdlite.dto.response.CardResponse;
+import io.github.mateuszuran.ptdlite.dto.response.FuelResponse;
+import io.github.mateuszuran.ptdlite.dto.response.TripResponse;
 import io.github.mateuszuran.ptdlite.service.CardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,5 +33,17 @@ public class CardController {
     public ResponseEntity<?> delete(@RequestParam Long cardId) {
         service.deleteCard(cardId);
         return ResponseEntity.ok().body(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/fuel")
+    public ResponseEntity<List<FuelResponse>> getFuelsFromCard(@RequestParam Long id) {
+        return ResponseEntity.ok()
+                .body(service.getFuelsFromCard(id));
+    }
+
+    @GetMapping("/trip")
+    public ResponseEntity<List<TripResponse>> getTripsFromCard(@RequestParam Long id) {
+        return ResponseEntity.ok()
+                .body(service.getTripsFromCard(id));
     }
 }

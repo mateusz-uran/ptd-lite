@@ -1,15 +1,17 @@
 import './App.css';
+import React, { useState } from 'react';
 import {
   createBrowserRouter,
   RouterProvider
 } from 'react-router-dom';
-import React, { useState } from 'react';
+import { Backdrop, CircularProgress } from '@mui/material';
+import { ReactKeycloakProvider } from '@react-keycloak/web';
+import client from './api/keycloakCredentials';
 import Navbar from './component/Navbar';
 import ErrorPage from './component/ErrorPage';
 import CardSpecification from './component/CardSpecification';
-import { ReactKeycloakProvider } from '@react-keycloak/web';
-import client from './Keycloak';
-import { Backdrop, CircularProgress } from '@mui/material';
+import AddTrip from './component/AddTrip';
+import AddFuel from './component/AddFuel';
 
 const initOptions = {
   onLoad: "login-required",
@@ -18,7 +20,6 @@ const initOptions = {
 }
 
 function App() {
-  const [token, setToken] = useState('');
   const [isLogin, setIsLogin] = useState(false);
   const [username, setUsername] = useState('');
 
@@ -26,7 +27,6 @@ function App() {
     if (event === 'onAuthSuccess') {
       if (client.authenticated) {
         setIsLogin(true);
-        setToken(client.token);
         const userExtra = client.tokenParsed.preferred_username
         setUsername(userExtra);
       }
@@ -47,12 +47,20 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Navbar token={token} isLogin={isLogin} username={username} />,
+      element: <Navbar isLogin={isLogin} username={username} />,
       errorElement: <ErrorPage />,
       children: [
         {
           path: "card/:cardId",
           element: <CardSpecification />,
+        },
+        {
+          path: "card/:cardId/add-trip",
+          element: <AddTrip />,
+        },
+        {
+          path: "card/:cardId/add-fuel",
+          element: <AddFuel />,
         },
       ],
     },

@@ -1,15 +1,15 @@
 package io.github.mateuszuran.ptdlite.mapper;
 
 import io.github.mateuszuran.ptdlite.config.ModelMapperConfig;
-import io.github.mateuszuran.ptdlite.dto.CardResponse;
+import io.github.mateuszuran.ptdlite.dto.response.CardResponse;
 import io.github.mateuszuran.ptdlite.model.Card;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
 
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class CardMapper {
     private final ModelMapperConfig mapper;
 
