@@ -9,31 +9,18 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import Divider from '@mui/material/Divider';
 import CardsList from './CardsList';
-import { useNavigate } from 'react-router-dom';
+import { useKeycloak } from '@react-keycloak/web';
+import { Button } from '@mui/material';
 
 function Navbar(props) {
-    const { token, isLogin } = props;
+    const { token, isLogin, username } = props;
+    const { keycloak } = useKeycloak();
 
-    const navigate = useNavigate();
     const [darkMode, setDarkMode] = useState(false);
-    const [username, setUsername] = useState("");
-    const [renderCardListHandler, setRenderCardListHandler] = useState(false);
 
     const handleChangeTheme = (event) => {
         setDarkMode(event.target.checked);
         localStorage.setItem('theme', JSON.stringify(event.target.checked));
-    }
-
-    const handleChangeUsername = (event) => {
-        setUsername(event.target.value);
-        setRenderCardListHandler(false);
-        navigate("/");
-    }
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        localStorage.setItem('username', JSON.stringify(username));
-        setRenderCardListHandler(true);
     }
 
     const darkTheme = createTheme(darkMode ?
@@ -48,16 +35,7 @@ function Navbar(props) {
         }
     )
 
-    function checkStorage() {
-        let user = JSON.parse(localStorage.getItem('username'));
-        if (user !== undefined && user !== null) {
-            setUsername(user);
-            setRenderCardListHandler(true);
-        }
-    }
-
     useEffect(() => {
-        checkStorage();
         let availableTheme = JSON.parse(localStorage.getItem('theme'));
         availableTheme && setDarkMode(availableTheme);
     }, []);
@@ -65,21 +43,10 @@ function Navbar(props) {
     return (
         <div className={`${darkMode ? 'dark bg-slate-700' : 'bg-blue-200'}`}>
             <ThemeProvider theme={darkTheme}>
-                <div className='p-4 flex justify-between items-center'>
-                    <form onSubmit={handleSubmit} className='lg:w-1/6'>
-                        <div className='flex items-center'>
-                            <TextField
-                                className={darkMode ? 'text-white' : ''}
-                                id="outlined-basic"
-                                label="Username"
-                                value={username}
-                                onChange={handleChangeUsername}
-                            />
-                            <IconButton onClick={handleSubmit}>
-                                <PersonSearchIcon className={darkMode ? 'text-white' : ''} />
-                            </IconButton>
-                        </div>
-                    </form>
+                <div className='p-4 flex justify-end items-center'>
+                    <div className='mx-2'>
+                        {isLogin ? <Button onClick={() => keycloak.logout()} variant="contained" sx={{ fontWeight: 'bold' }}>Logout</Button> : null}
+                    </div>
                     <div className='flex items-center'>
                         <WbSunnyIcon className={darkMode ? 'text-blue-200' : 'text-white'} />
                         <Switch
@@ -90,7 +57,7 @@ function Navbar(props) {
                     </div>
                 </div>
                 <Divider sx={{ borderBottomWidth: 2, marginBottom: 0 }} />
-                {renderCardListHandler && isLogin && token &&
+                {isLogin && token &&
                     <CardsList
                         user={username}
                         mode={darkMode}
