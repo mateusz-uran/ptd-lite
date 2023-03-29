@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as yup from "yup";
 
 import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
@@ -11,12 +14,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Backdrop from '@mui/material/Backdrop';
 import { ListItemButton } from '@mui/material';
 
-import CardService from '../services/CardService';
 import { getCurrentDay, getCurrentMonth, getCurrentYear } from '../utility/utils';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { useFormik } from 'formik';
-import * as yup from "yup";
-
+import CardService from '../services/CardService';
 import CardCalendar from './CardCalendar';
 import AlertDialog from './AlertDialog';
 import CustomSnackbar from './CustomSnackbar';
@@ -24,7 +23,7 @@ import GeneratePDF from './GeneratePDF';
 
 function CardsList(props) {
     const navigate = useNavigate();
-    const { user, mode } = props;
+    const { user, mode, token } = props;
 
     const [year, setYear] = useState(getCurrentYear());
     const [month, setMonth] = useState(getCurrentMonth());
@@ -52,9 +51,10 @@ function CardsList(props) {
         message: ''
     });
 
+
     const retrieveCardByUserAndDate = () => {
         setOpenBackdrop(true);
-        CardService.getCardByUserAndMonth(user, year, month)
+        CardService.getCardByUserAndMonth(user, year, month, token)
             .then(response => {
                 setCardsList(response.data);
                 setOpenBackdrop(false);
@@ -82,7 +82,7 @@ function CardsList(props) {
                 number: values.number,
                 username: user
             }
-            CardService.create(cardPayload, year, month, day)
+            CardService.create(cardPayload, year, month, day, token)
                 .then(response => {
                     setCardsList(cardsList => [...cardsList, response.data]);
                     resetForm();
@@ -181,7 +181,6 @@ function CardsList(props) {
                         setMonth={setMonth}
                     />
                 </div>
-
                 {cardsList && cardsList.length > 0 ? (cardsList.map((card, index) => {
                     return (
                         <div key={index}>

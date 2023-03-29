@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import TextField from '@mui/material/TextField'
 import Switch from '@mui/material/Switch';
 import IconButton from '@mui/material/IconButton';
@@ -12,6 +12,8 @@ import CardsList from './CardsList';
 import { useNavigate } from 'react-router-dom';
 
 function Navbar(props) {
+    const { token, isLogin } = props;
+
     const navigate = useNavigate();
     const [darkMode, setDarkMode] = useState(false);
     const [username, setUsername] = useState("");
@@ -88,10 +90,11 @@ function Navbar(props) {
                     </div>
                 </div>
                 <Divider sx={{ borderBottomWidth: 2, marginBottom: 0 }} />
-                {renderCardListHandler &&
+                {renderCardListHandler && isLogin && token &&
                     <CardsList
                         user={username}
                         mode={darkMode}
+                        token={token}
                     />
                 }
             </ThemeProvider>
