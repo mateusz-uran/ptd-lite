@@ -1,13 +1,34 @@
 package io.github.mateuszuran.ptdlite.service;
 
-import io.github.mateuszuran.ptdlite.dto.CardFuels;
-import io.github.mateuszuran.ptdlite.dto.CardTrips;
-import io.github.mateuszuran.ptdlite.dto.Counters;
-import io.github.mateuszuran.ptdlite.dto.PdfRequest;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+import io.github.mateuszuran.ptdlite.dto.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Slf4j
 @Service
 public class PdfService {
+
+    private static final String cloudinaryUrl = "https://res.cloudinary.com/dzwnsabwr/raw/upload/v1680186582/test_omlqwp.csv";
+
+    public List<PdfCsvReader> readCsvFile() throws IOException {
+        URL url = new URL(cloudinaryUrl);
+        InputStreamReader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
+        CsvToBean<PdfCsvReader> csvToBean = new CsvToBeanBuilder<PdfCsvReader>(reader)
+                .withType(PdfCsvReader.class)
+                .withSeparator(';')
+                .withSkipLines(1)
+                .build();
+        return csvToBean.stream().collect(Collectors.toList());
+    }
 
     public Counters calculateCounters(PdfRequest pdfRequest) {
         var firstCounterFromCard = pdfRequest.getCardTripsList().stream().mapToInt(CardTrips::getCounterStart).min()
@@ -25,5 +46,12 @@ public class PdfService {
                 .mileage(sumMileage)
                 .refuelingSum(cardRefuelingAmount)
                 .build();
+    }
+
+    public PdfCsvReader getUserInformation(String username) throws IOException {
+        return readCsvFile().stream()
+                .filter(user -> user.getUsername().equals(username))
+                .findFirst()
+                .orElseThrow(IllegalArgumentException::new);
     }
 }

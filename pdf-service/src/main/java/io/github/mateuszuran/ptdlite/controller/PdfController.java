@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/pdf")
@@ -21,7 +23,8 @@ public class PdfController {
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
-    void showReceivedData(PdfRequest pdfRequest) {
-        log.info(String.valueOf(pdfRequest));
+    @GetMapping("/file")
+    public ResponseEntity<?> callFile(@RequestParam String username) throws IOException {
+        return ResponseEntity.ok(service.getUserInformation(username));
     }
 }

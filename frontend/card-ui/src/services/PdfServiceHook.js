@@ -12,6 +12,15 @@ const usePdfService = () => {
         });
     }
 
-    return { generatePdf };
+    const readFile = (username) => {
+        return axiosInstance.get("/pdf/file",  {
+            params: { username: username },
+            headers: {
+                'Authorization': `Bearer ${keycloak.token}`
+            }
+        });
+    }
+
+    return { generatePdf, readFile };
 }
 export default usePdfService;
