@@ -11,6 +11,7 @@ function GeneratePDF(props) {
             number: cardNumber,
             author: cardAuthor,
             cardTripsList: cardTrips,
+            cardFuelsList: cardFuels,
         }
         generatePdf(payload)
             .then(response => {

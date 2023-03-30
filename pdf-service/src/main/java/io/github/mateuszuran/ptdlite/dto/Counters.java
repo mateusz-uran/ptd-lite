@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CardFuels {
-    private Long id;
-    private String refuelingDate;
-    private String refuelingLocation;
-    private Integer vehicleCounter;
-    private Integer refuelingAmount;
+public class Counters {
+    private Integer firstCounter;
+    private Integer lastCounter;
+    private Integer mileage;
+    private Integer refuelingSum;
 }
