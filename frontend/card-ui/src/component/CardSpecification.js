@@ -1,15 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import { Link, useOutletContext } from 'react-router-dom';
 import TripTable from './TripTable';
 import FuelTable from './FuelTable';
-
+import useCardService from '../services/CardServiceHook';
+import GeneratePDF from './GeneratePDF';
 
 function CardSpecification(props) {
+    const [cardId, cardNumber, user] = useOutletContext();
+    const { getTripFromCard } = useCardService();
+    const { getFuelFromCard } = useCardService();
 
-    const [cardId] = useOutletContext();
+    const [cardTrips, setCardTrips] = useState([]);
+    const [cardFuels, setCardFuels] = useState([]);
+
+    const [openBackDropTrips, setOpenBackdropTrips] = useState(false);
+    const [openBackDropFuels, setOpenBackdropFuels] = useState(false);
 
     useEffect(() => {
+        setOpenBackdropTrips(true);
+        setOpenBackdropFuels(true);
+
+        getTripFromCard(cardId)
+            .then(response => {
+                setCardTrips(response.data);
+                setOpenBackdropTrips(false);
+            }, (error) => {
+                setOpenBackdropTrips(false);
+                console.log(error);
+            })
+
+        getFuelFromCard(cardId)
+            .then(response => {
+                setCardFuels(response.data);
+                setOpenBackdropFuels(false);
+            }, (error) => {
+                setOpenBackdropFuels(false);
+                console.log(error);
+            })
     }, [cardId])
 
     return (
@@ -22,9 +50,18 @@ function CardSpecification(props) {
                 <Link to={`../${cardId}/add-fuel`} relative="path">
                     <Button variant="outlined" sx={{ fontWeight: 'bold', marginX: 1 }}>Add Fuel</Button>
                 </Link>
+
+                {cardTrips && cardTrips.length > 1 && cardFuels && cardFuels.length > 0 &&
+                    <GeneratePDF
+                        cardNumber={cardNumber}
+                        cardAuthor={user}
+                        cardTrips={cardTrips}
+                        cardFuels={cardFuels}
+                    />
+                }
             </div>
-            <TripTable cardId={cardId} />
-            <FuelTable cardId={cardId} />
+            {!openBackDropTrips && cardTrips && <TripTable cardId={cardId} cardTrips={cardTrips} openBackDropTrips={openBackDropTrips} />}
+            {!openBackDropFuels && cardTrips && <FuelTable cardId={cardId} cardFuels={cardFuels} openBackDropFuels={openBackDropFuels} />}
         </div>
     );
 }

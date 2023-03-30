@@ -35,6 +35,7 @@ function CardsList(props) {
     const [cardsList, setCardsList] = useState([]);
 
     const [cardId, setCardId] = useState(0);
+    const [cardNumber, setCardNumber] = useState('');
     const [renderCardInfoHandler, setRenderCardInfoHandler] = useState(false);
 
     const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -101,10 +102,12 @@ function CardsList(props) {
         },
     });
 
-    const handleCardInformation = (id) => {
+    const handleCardInformation = (id, number) => {
         setCardId(id);
+        setCardNumber(number);
         localStorage.setItem('selectedCard', JSON.stringify(id));
-        if (renderCardInfoHandler === true && cardId !== 0) {
+        localStorage.setItem('selectedCardNumber', JSON.stringify(number));
+        if (renderCardInfoHandler === true && cardId !== 0 && cardNumber !== '') {
             setRenderCardInfoHandler(false);
             setRenderCardInfoHandler(true);
         } else {
@@ -117,14 +120,18 @@ function CardsList(props) {
             .then(() => {
                 setCardsList(cardsList.filter(card => card.id !== id));
                 setRenderCardInfoHandler(false);
+                localStorage.removeItem('selectedCard');
+                localStorage.removeItem('selectedCardNumber');
                 navigate(-1);
             })
     }
 
     const checkStorage = () => {
         let storedCardId = JSON.parse(localStorage.getItem('selectedCard'));
-        if (storedCardId !== undefined && storedCardId !== null) {
+        let storedCardNumber = JSON.parse(localStorage.getItem('selectedCardNumber'));
+        if (storedCardId !== undefined && storedCardId !== null && storedCardNumber !== undefined && storedCardNumber !== null) {
             setCardId(storedCardId);
+            setCardNumber(storedCardNumber);
             setRenderCardInfoHandler(true);
         }
     }
@@ -191,16 +198,9 @@ function CardsList(props) {
                                 <Link to={`card/${card.id}`}>
                                     <ListItemButton
                                         selected={renderCardInfoHandler && cardId === card.id}
-                                        onClick={() => handleCardInformation(card.id)}
+                                        onClick={() => handleCardInformation(card.id, card.number)}
                                     >
                                         <ListItemText sx={{ textTransform: 'uppercase' }} primary={card.number} />
-                                        <GeneratePDF
-                                            cardId={cardId}
-                                            cardDone={card.done}
-                                            user={user}
-                                            setOpenBackdrop={setOpenBackdrop}
-                                            setSnackbarInformation={setSnackbarInformation}
-                                        />
                                         <IconButton
                                             edge="end"
                                             onClick={() =>
@@ -231,8 +231,8 @@ function CardsList(props) {
             </div>
             <Divider orientation="vertical" flexItem sx={{ borderWidth: 1 }} />
             <div className='w-full'>
-                {renderCardInfoHandler && cardId &&
-                    <Outlet context={[cardId]} />
+                {renderCardInfoHandler && cardId && cardNumber &&
+                    <Outlet context={[cardId, cardNumber, user]} />
                 }
             </div>
         </div>

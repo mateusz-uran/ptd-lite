@@ -25,3 +25,8 @@ spring:
           uri: lb://card-service
           predicates:
             - Path=/api/card/**, /api/trip/**, /api/fuel/**
+
+        - id: pdf-service
+          uri: lb://pdf-service
+          predicates:
+            - Path=/api/pdf/**

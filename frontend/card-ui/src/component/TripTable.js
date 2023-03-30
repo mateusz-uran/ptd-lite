@@ -17,17 +17,15 @@ import useCardService from '../services/CardServiceHook';
 import useTripService from '../services/TripServiceHook';
 
 function TripTable(props) {
-    const { cardId } = props;
-    const { getTripFromCard } = useCardService();
+    const { cardId, cardTrips, openBackDropTrips } = props;
+
     const { deleteManyTrips } = useTripService();
 
-    const [trips, setTrips] = useState([]);
+    const [trips, setTrips] = useState(cardTrips);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const [selected, setSelected] = useState([]);
-
-    const [open, setOpen] = useState(false);
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
@@ -84,24 +82,11 @@ function TripTable(props) {
     };
 
     useEffect(() => {
-        setOpen(true);
-        getTripFromCard(cardId)
-            .then(response => {
-                setTrips(response.data);
-                setOpen(false);
-            }, (error) => {
-                setOpen(false);
-                console.log(error);
-            })
         setSelected([]);
+
     }, [cardId])
     return (
         <div>
-            <Backdrop
-                open={open}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
             <TableContainer>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>

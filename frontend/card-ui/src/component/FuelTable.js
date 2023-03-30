@@ -14,11 +14,10 @@ import useCardService from '../services/CardServiceHook';
 import useFuelService from '../services/FuelServiceHook';
 
 function FuelTable(props) {
-    const { cardId } = props;
-    const { getFuelFromCard } = useCardService();
+    const { cardId, cardFuels, openBackDropFuels } = props;
     const { deleteFuel } = useFuelService();
 
-    const [fuels, setFuels] = useState([]);
+    const [fuels, setFuels] = useState(cardFuels);
 
     const [selected, setSelected] = useState(0);
 
@@ -40,24 +39,10 @@ function FuelTable(props) {
     }
 
     useEffect(() => {
-        setOpen(true);
-        getFuelFromCard(cardId)
-            .then(response => {
-                setFuels(response.data);
-                setOpen(false);
-            }, (error) => {
-                setOpen(false);
-                console.log(error);
-            })
         setSelected(-1);
     }, [cardId])
     return (
         <div>
-            <Backdrop
-                open={open}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
             <TableContainer>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
