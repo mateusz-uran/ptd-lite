@@ -4,23 +4,14 @@ import axiosInstance from '../api/axiosInstance';
 const usePdfService = () => {
     const { keycloak } = useAuth();
 
-    const generatePdf = (card) => {
-        return axiosInstance.post("/pdf/generate", card, {
+    const generatePdf = (pdfRequest) => {
+        return axiosInstance.post("/pdf/generate", pdfRequest, {
             headers: {
                 'Authorization': `Bearer ${keycloak.token}`
             }
         });
     }
 
-    const readFile = (username) => {
-        return axiosInstance.get("/pdf/file",  {
-            params: { username: username },
-            headers: {
-                'Authorization': `Bearer ${keycloak.token}`
-            }
-        });
-    }
-
-    return { generatePdf, readFile };
+    return { generatePdf };
 }
 export default usePdfService;

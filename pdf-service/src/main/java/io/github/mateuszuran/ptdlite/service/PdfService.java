@@ -19,7 +19,7 @@ public class PdfService {
 
     private static final String cloudinaryUrl = "https://res.cloudinary.com/dzwnsabwr/raw/upload/v1680186582/test_omlqwp.csv";
 
-    public List<PdfCsvReader> readCsvFile() throws IOException {
+    public List<PdfCsvReader> getFileAgain() throws IOException {
         URL url = new URL(cloudinaryUrl);
         InputStreamReader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
         CsvToBean<PdfCsvReader> csvToBean = new CsvToBeanBuilder<PdfCsvReader>(reader)
@@ -49,9 +49,17 @@ public class PdfService {
     }
 
     public PdfCsvReader getUserInformation(String username) throws IOException {
-        return readCsvFile().stream()
+        return getFileAgain().stream()
                 .filter(user -> user.getUsername().equals(username))
                 .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new IllegalArgumentException("Username not found"));
+    }
+
+    public String gatherAllData(PdfRequest pdfRequest) throws IOException {
+        var userInfo = getUserInformation(pdfRequest.getUsername());
+        log.info(String.valueOf(userInfo));
+        var counterInfo = calculateCounters(pdfRequest);
+        log.info(String.valueOf(counterInfo));
+        return "PDF";
     }
 }

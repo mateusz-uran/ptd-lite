@@ -18,13 +18,8 @@ public class PdfController {
     private final PdfService service;
 
     @PostMapping("/generate")
-    public ResponseEntity<?> generatePdf(@RequestBody PdfRequest pdfRequest) {
-        log.info(String.valueOf(service.calculateCounters(pdfRequest)));
+    public ResponseEntity<?> generatePdf(@RequestBody PdfRequest pdfRequest) throws IOException {
+        service.gatherAllData(pdfRequest);
         return ResponseEntity.ok(HttpStatus.CREATED);
-    }
-
-    @GetMapping("/file")
-    public ResponseEntity<?> callFile(@RequestParam String username) throws IOException {
-        return ResponseEntity.ok(service.getUserInformation(username));
     }
 }

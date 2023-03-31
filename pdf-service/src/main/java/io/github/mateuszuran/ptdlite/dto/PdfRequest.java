@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 public class PdfRequest {
     private String number;
-    private String author;
+    private String username;
     private List<CardTrips> cardTripsList;
     private List<CardFuels> cardFuelsList;
 }
