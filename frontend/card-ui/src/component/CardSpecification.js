@@ -7,7 +7,7 @@ import useCardService from '../services/CardServiceHook';
 import GeneratePDF from './GeneratePDF';
 
 function CardSpecification(props) {
-    const [cardId, cardNumber, user] = useOutletContext();
+    const [cardId, cardNumber] = useOutletContext();
     const { getTripFromCard } = useCardService();
     const { getFuelFromCard } = useCardService();
 
@@ -54,7 +54,6 @@ function CardSpecification(props) {
                 {cardTrips && cardTrips.length > 1 && cardFuels && cardFuels.length > 0 &&
                     <GeneratePDF
                         cardNumber={cardNumber}
-                        cardAuthor={user}
                         cardTrips={cardTrips}
                         cardFuels={cardFuels}
                     />

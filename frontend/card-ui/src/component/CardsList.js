@@ -232,7 +232,7 @@ function CardsList(props) {
             <Divider orientation="vertical" flexItem sx={{ borderWidth: 1 }} />
             <div className='w-full'>
                 {renderCardInfoHandler && cardId && cardNumber &&
-                    <Outlet context={[cardId, cardNumber, user]} />
+                    <Outlet context={[cardId, cardNumber]} />
                 }
             </div>
         </div>

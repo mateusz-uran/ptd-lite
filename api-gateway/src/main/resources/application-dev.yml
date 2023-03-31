@@ -30,3 +30,5 @@ spring:
           uri: lb://pdf-service
           predicates:
             - Path=/api/pdf/**
+          filters:
+            - ExtractUsername

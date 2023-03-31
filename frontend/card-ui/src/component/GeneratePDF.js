@@ -3,13 +3,12 @@ import usePdfService from '../services/PdfServiceHook';
 import { Button } from '@mui/material';
 
 function GeneratePDF(props) {
-    const { cardNumber, cardAuthor, cardTrips, cardFuels} = props;
+    const { cardNumber, cardTrips, cardFuels} = props;
     const { generatePdf, readFile } = usePdfService();
 
-    const generate = (cardNumber, cardAuthor, cardTrips, cardFuels) => {
+    const generate = () => {
         let pdfRequest = {
             number: cardNumber,
-            username: "mateusz",
             cardTripsList: cardTrips,
             cardFuelsList: cardFuels,
         }
@@ -23,7 +22,7 @@ function GeneratePDF(props) {
 
     return (
         <div>
-            <Button onClick={() => generate(cardNumber, cardAuthor, cardTrips, cardFuels)} variant="outlined" sx={{ fontWeight: 'bold', marginX: 1 }}>Generate PDF</Button>
+            <Button onClick={() => generate()} variant="outlined" sx={{ fontWeight: 'bold', marginX: 1 }}>Generate PDF</Button>
         </div>
     );
 }

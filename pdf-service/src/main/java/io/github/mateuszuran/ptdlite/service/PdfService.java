@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class PdfService {
 
-    private static final String cloudinaryUrl = "https://res.cloudinary.com/dzwnsabwr/raw/upload/v1680186582/test_omlqwp.csv";
+    private static final String cloudinaryUrl = "https://res.cloudinary.com/dzwnsabwr/raw/upload/v1680291212/user_metadata_dkso9f.csv";
 
     public List<PdfCsvReader> getFileAgain() throws IOException {
         URL url = new URL(cloudinaryUrl);
@@ -55,8 +55,8 @@ public class PdfService {
                 .orElseThrow(() -> new IllegalArgumentException("Username not found"));
     }
 
-    public String gatherAllData(PdfRequest pdfRequest) throws IOException {
-        var userInfo = getUserInformation(pdfRequest.getUsername());
+    public String gatherAllData(PdfRequest pdfRequest, String username) throws IOException {
+        var userInfo = getUserInformation(username);
         log.info(String.valueOf(userInfo));
         var counterInfo = calculateCounters(pdfRequest);
         log.info(String.valueOf(counterInfo));
