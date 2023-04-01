@@ -12,6 +12,14 @@ const usePdfService = () => {
         });
     }
 
-    return { generatePdf };
+    const roleBasedPath = () => {
+        return axiosInstance.get("/pdf/upload", {
+            headers: {
+                'Authorization': `Bearer ${keycloak.token}`
+            }
+        });
+    }
+
+    return { generatePdf, roleBasedPath };
 }
 export default usePdfService;

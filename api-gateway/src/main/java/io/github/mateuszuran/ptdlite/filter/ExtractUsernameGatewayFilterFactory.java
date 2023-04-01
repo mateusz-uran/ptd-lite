@@ -34,17 +34,7 @@ public class ExtractUsernameGatewayFilterFactory extends AbstractGatewayFilterFa
                 .map(username -> Config.REWRITE_PATH_PREFIX + username);
     }
 
-
     public static class Config {
-        private String usernamePrefix;
         private static final String REWRITE_PATH_PREFIX = "/api/pdf/generate?username=";
-
-        public String getUsernamePrefix() {
-            return usernamePrefix;
-        }
-
-        public void setUsernamePrefix(String usernamePrefix) {
-            this.usernamePrefix = usernamePrefix;
-        }
     }
 }

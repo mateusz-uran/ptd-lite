@@ -9,6 +9,7 @@ logging:
     root: INFO
     org.springframework.cloud.gateway: TRACE
     org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
+    org.springframework.security: TRACE
 spring:
   application.name: api-gateway
 
@@ -29,6 +30,10 @@ spring:
         - id: pdf-service
           uri: lb://pdf-service
           predicates:
-            - Path=/api/pdf/**
+            - Path=/api/pdf/generate
           filters:
             - ExtractUsername
+        - id: pdf-service
+          uri: lb://pdf-service
+          predicates:
+            - Path=/api/pdf/upload

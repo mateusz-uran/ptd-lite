@@ -24,4 +24,10 @@ public class PdfController {
         service.gatherAllData(pdfRequest, username);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
+
+    @GetMapping("/upload")
+    public ResponseEntity<?> uploadCsvFile() {
+        log.info("auth by admin");
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 }
