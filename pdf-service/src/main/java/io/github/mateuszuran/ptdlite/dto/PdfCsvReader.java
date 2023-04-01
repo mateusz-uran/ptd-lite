@@ -21,4 +21,14 @@ public class PdfCsvReader {
     private String truckFullTankCapacity;
     @CsvBindByPosition(position = 7)
     private String truckAdBlueCapacity;
+    @CsvBindByPosition(position = 8)
+    private String trailerType;
+    @CsvBindByPosition(position = 9)
+    private String trailerLicensePlate;
+    @CsvBindByPosition(position = 10)
+    private String trailerFuelCapacity;
+    @CsvBindByPosition(position = 11)
+    private String truckImageLink;
+    @CsvBindByPosition(position = 12)
+    private String truckImageDescription;
 }

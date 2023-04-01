@@ -3,8 +3,8 @@ import usePdfService from '../services/PdfServiceHook';
 import { Button } from '@mui/material';
 
 function GeneratePDF(props) {
-    const { cardNumber, cardTrips, cardFuels} = props;
-    const { generatePdf, readFile } = usePdfService();
+    const { cardNumber, cardTrips, cardFuels } = props;
+    const { generatePdf } = usePdfService();
 
     const generate = () => {
         let pdfRequest = {
@@ -14,7 +14,10 @@ function GeneratePDF(props) {
         }
         generatePdf(pdfRequest)
             .then(response => {
-                console.log("Response: ", response.data)
+                const file = new Blob([response.data], { type: "application/pdf" });
+                const fileURL = URL.createObjectURL(file);
+                const pdfWindow = window.open();
+                pdfWindow.location.href = fileURL;
             }, (error) => {
                 console.log("Error: ", error);
             });

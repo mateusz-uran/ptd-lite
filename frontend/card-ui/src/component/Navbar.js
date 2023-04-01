@@ -8,9 +8,6 @@ import Divider from '@mui/material/Divider';
 import CardsList from './CardsList';
 import { useKeycloak } from '@react-keycloak/web';
 import { Button } from '@mui/material';
-import { Link } from 'react-router-dom';
-import AuthorizedElement from './AuthorizedElement';
-import ProtectedLink from './ProtectedLink';
 
 function Navbar(props) {
     const { isLogin, username } = props;
@@ -45,7 +42,7 @@ function Navbar(props) {
             <ThemeProvider theme={darkTheme}>
                 <div className='p-4 flex justify-between items-center'>
                     <div>
-                        <AuthorizedElement roles={['ptd_lite_admin']} children={<ProtectedLink />} />
+                        &nbsp;
                     </div>
                     <div className='flex'>
                         <div className='mx-2'>

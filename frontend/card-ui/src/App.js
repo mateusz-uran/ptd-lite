@@ -12,9 +12,6 @@ import ErrorPage from './component/ErrorPage';
 import CardSpecification from './component/CardSpecification';
 import AddTrip from './component/AddTrip';
 import AddFuel from './component/AddFuel';
-import { PrivateRoute } from './component/PrivateRoute';
-import Protected from './component/ProtectedLink';
-import ProtectedComponent from './component/ProtectedComponent';
 
 const initOptions = {
   onLoad: "login-required",
@@ -66,9 +63,6 @@ function App() {
         },
       ],
     },
-    {
-      path: "/protected", element: <PrivateRoute roles={['ptd_lite_admin']} component={ProtectedComponent} />
-    }
   ]);
 
   return (
