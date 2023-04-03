@@ -10,11 +10,7 @@ import { TableFooter } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-
-import useCardService from '../services/CardServiceHook';
-import useTripService from '../services/TripServiceHook';
+import useTripService from '../../services/TripServiceHook';
 
 function TripTable(props) {
     const { cardId, cardTrips, openBackDropTrips } = props;

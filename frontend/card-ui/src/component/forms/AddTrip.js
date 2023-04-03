@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Button, Divider, TextField } from '@mui/material';
 import { useFormik } from "formik";
-import useTripService from '../services/TripServiceHook';
+import useTripService from '../../services/TripServiceHook';
 
 function AddTrip(props) {
     const navigate = useNavigate();

@@ -50,7 +50,7 @@ public class PdfController {
                 .body(bytes);
     }
 
-    public static WebContext createContext(HttpServletRequest req, HttpServletResponse res) {
+    private static WebContext createContext(HttpServletRequest req, HttpServletResponse res) {
         var application = JakartaServletWebApplication.buildApplication(req.getServletContext());
         var exchange = application.buildExchange(req, res);
         return new WebContext(exchange);

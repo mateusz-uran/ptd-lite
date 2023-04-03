@@ -14,14 +14,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Backdrop from '@mui/material/Backdrop';
 import { ListItemButton } from '@mui/material';
 
-import { getCurrentDay, getCurrentMonth, getCurrentYear } from '../utility/utils';
+import { getCurrentDay, getCurrentMonth, getCurrentYear } from '../../utility/utils';
 
-import useCardService from '../services/CardServiceHook';
+import useCardService from '../../services/CardServiceHook';
 
 import CardCalendar from './CardCalendar';
-import AlertDialog from './AlertDialog';
-import CustomSnackbar from './CustomSnackbar';
-import GeneratePDF from './GeneratePDF';
+import AlertDialog from '../misc/AlertDialog';
+import CustomSnackbar from '../misc/CustomSnackbar';
 
 function CardsList(props) {
     const navigate = useNavigate();

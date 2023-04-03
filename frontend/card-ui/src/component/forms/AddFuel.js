@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Button, TextField } from '@mui/material';
 import { useFormik } from "formik";
-import useFuelService from '../services/FuelServiceHook';
+import useFuelService from '../../services/FuelServiceHook';
 
 function AddFuel(props) {
     const { createFuel } = useFuelService();

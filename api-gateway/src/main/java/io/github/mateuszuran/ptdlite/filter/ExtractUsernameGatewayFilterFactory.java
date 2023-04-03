@@ -1,5 +1,6 @@
 package io.github.mateuszuran.ptdlite.filter;
 
+import lombok.Data;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -34,17 +35,8 @@ public class ExtractUsernameGatewayFilterFactory extends AbstractGatewayFilterFa
                 .map(username -> Config.REWRITE_PATH_PREFIX + username);
     }
 
-
+    @Data
     public static class Config {
-        private String usernamePrefix;
         private static final String REWRITE_PATH_PREFIX = "/api/pdf/generate?username=";
-
-        public String getUsernamePrefix() {
-            return usernamePrefix;
-        }
-
-        public void setUsernamePrefix(String usernamePrefix) {
-            this.usernamePrefix = usernamePrefix;
-        }
     }
 }

@@ -9,9 +9,9 @@ import { ReactKeycloakProvider } from '@react-keycloak/web';
 import client from './api/keycloakCredentials';
 import Navbar from './component/Navbar';
 import ErrorPage from './component/ErrorPage';
-import CardSpecification from './component/CardSpecification';
-import AddTrip from './component/AddTrip';
-import AddFuel from './component/AddFuel';
+import CardSpecification from './component/card/CardSpecification';
+import AddTrip from './component/forms/AddTrip';
+import AddFuel from './component/forms/AddFuel';
 
 const initOptions = {
   onLoad: "login-required",
