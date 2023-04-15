@@ -1,52 +1,27 @@
 import './App.css';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   createBrowserRouter,
   RouterProvider
 } from 'react-router-dom';
-import { Backdrop, CircularProgress } from '@mui/material';
-import { ReactKeycloakProvider } from '@react-keycloak/web';
-import client from './api/keycloakCredentials';
 import Navbar from './component/Navbar';
 import ErrorPage from './component/ErrorPage';
 import CardSpecification from './component/card/CardSpecification';
 import AddTrip from './component/forms/AddTrip';
 import AddFuel from './component/forms/AddFuel';
 
-const initOptions = {
-  onLoad: "login-required",
-  responseType: 'code',
-  pkceMethod: 'S256',
-}
+import { useAuth0 } from '@auth0/auth0-react';
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false);
-  const [username, setUsername] = useState('');
-
-  const handleOnEvent = async (event, error) => {
-    if (event === 'onAuthSuccess') {
-      if (client.authenticated) {
-        setIsLogin(true);
-        const userExtra = client.tokenParsed.preferred_username
-        setUsername(userExtra);
-      }
-    }
-  }
-
-  const loadingComponent = (
-    <div className='flex text-align justify-center'>
-      <Backdrop
-        open={true}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-      <h1>Authorization in progress, please wait...</h1>
-    </div>
-  )
+  const {
+    isLoading,
+    isAuthenticated,
+    loginWithRedirect,
+  } = useAuth0();
 
   const router = createBrowserRouter([
     {
-      path: "/", element: <Navbar isLogin={isLogin} username={username} />,
+      path: "/", element: <Navbar isAuthenticated={isAuthenticated} />,
       errorElement: <ErrorPage />,
       children: [
         {
@@ -62,20 +37,16 @@ function App() {
           element: <AddFuel />,
         },
       ],
+
     },
   ]);
 
+  if (!isAuthenticated && !isLoading) {
+    return loginWithRedirect();
+  }
+
   return (
-    <ReactKeycloakProvider
-      authClient={client}
-      initOptions={initOptions}
-      LoadingComponent={loadingComponent}
-      onEvent={(event, error) => handleOnEvent(event, error)}
-    >
-      <div>
-        <RouterProvider router={router} />
-      </div>
-    </ReactKeycloakProvider>
+    <RouterProvider router={router} />
   )
 }
 

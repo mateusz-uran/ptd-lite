@@ -28,6 +28,11 @@ public class PdfController {
     private final PdfService service;
     private final TemplateEngine templateEngine;
 
+    @GetMapping("/test")
+    public ResponseEntity<?> testEndpoint() {
+        return ResponseEntity.ok("Hello there");
+    }
+
     @PostMapping("/generate")
     public ResponseEntity<?> generatePdf(@RequestBody PdfRequest pdfRequest, @RequestParam String username, HttpServletRequest request, HttpServletResponse response) throws IOException {
         var pdf = service.gatherAllData(pdfRequest, username);

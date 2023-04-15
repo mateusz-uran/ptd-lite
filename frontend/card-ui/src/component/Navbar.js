@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Switch from '@mui/material/Switch';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -6,14 +5,14 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import Divider from '@mui/material/Divider';
 import CardsList from './card/CardsList';
-import { useKeycloak } from '@react-keycloak/web';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 function Navbar(props) {
     const navigate = useNavigate();
-    const { isLogin, username } = props;
-    const { keycloak } = useKeycloak();
+    const { isAuthenticated } = props;
+    const { user, logout } = useAuth0();
 
     const [darkMode, setDarkMode] = useState(false);
 
@@ -36,7 +35,7 @@ function Navbar(props) {
 
     const handleLogout = () => {
         navigate('/');
-        keycloak.logout();
+        logout();
     }
 
     useEffect(() => {
@@ -53,7 +52,7 @@ function Navbar(props) {
                     </div>
                     <div className='flex'>
                         <div className='mx-2'>
-                            {isLogin ? <Button onClick={() => handleLogout()} variant="contained" sx={{ fontWeight: 'bold' }}>Logout</Button> : null}
+                            <Button onClick={() => handleLogout()} variant="contained" sx={{ fontWeight: 'bold' }}>Logout</Button>
                         </div>
                         <div className='flex items-center'>
                             <WbSunnyIcon className={darkMode ? 'text-blue-200' : 'text-white'} />
@@ -66,11 +65,10 @@ function Navbar(props) {
                     </div>
                 </div>
                 <Divider sx={{ borderBottomWidth: 2, marginBottom: 0 }} />
-                {isLogin &&
-                    <CardsList
-                        user={username}
-                        mode={darkMode}
-                    />
+                {isAuthenticated &&
+                    <div>
+                        <CardsList mode={darkMode} user={user.nickname} />
+                    </div>
                 }
             </ThemeProvider>
         </div>

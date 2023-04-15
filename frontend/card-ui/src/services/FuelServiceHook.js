@@ -1,26 +1,23 @@
-import useAuth from '../api/keycloakHook';
+import { useAuth0 } from '@auth0/auth0-react';
 import axiosInstance from '../api/axiosInstance';
+import { getAuthConfig } from '../api/authToken';
 
 const useFuelService = () => {
-    const { keycloak } = useAuth();
+    const { getAccessTokenSilently } = useAuth0();
 
-    const createFuel = (id, fuel) => {
+    const createFuel = async (id, fuel) => {
+        const config = await getAuthConfig(getAccessTokenSilently);
         return axiosInstance.post("/fuel", fuel, {
             params: { id: id },
-            headers: {
-                "Content-type": "application/json",
-                'Authorization': `Bearer ${keycloak.token}`
-            }
+            ...config
         });
     }
 
-    const deleteFuel = (id) => {
+    const deleteFuel = async (id) => {
+        const config = await getAuthConfig(getAccessTokenSilently);
         return axiosInstance.delete("/fuel", {
             params: { id: id },
-            headers: {
-                "Content-type": "application/json",
-                'Authorization': `Bearer ${keycloak.token}`
-            }
+            ...config
         })
     }
 

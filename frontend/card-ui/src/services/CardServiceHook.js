@@ -1,59 +1,55 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import axiosInstance from '../api/axiosInstance';
-import useAuth from '../api/keycloakHook';
+import { getAuthConfig } from '../api/authToken';
 
 const useCardService = () => {
-    const { keycloak } = useAuth();
+    const { getAccessTokenSilently } = useAuth0();
 
-    const getCards = (username, year, month) => {
+    const getCards = async (username, year, month) => {
+        const config = await getAuthConfig(getAccessTokenSilently);
         return axiosInstance.get('/card/all', {
             params: {
                 username: username,
                 year: year,
                 month: month
             },
-            headers: {
-                'Authorization': `Bearer ${keycloak.token}`
-            }
+            ...config
         });
     }
 
-    const createCard = (card, year, month, dayOfMonth) => {
+    const createCard = async (card, year, month, dayOfMonth) => {
+        const config = await getAuthConfig(getAccessTokenSilently);
         return axiosInstance.post('/card/add', card, {
             params: {
                 year: year,
                 month: month,
                 dayOfMonth: dayOfMonth
             },
-            headers: {
-                'Authorization': `Bearer ${keycloak.token}`
-            }
+            ...config
         })
     }
 
-    const deleteCard = (cardId) => {
+    const deleteCard = async (cardId) => {
+        const config = await getAuthConfig(getAccessTokenSilently);
         return axiosInstance.delete('/card/delete', {
             params: { cardId: cardId },
-            headers: {
-                "Authorization": `Bearer ${keycloak.token}`,
-            }
+            ...config
         })
     }
 
-    const getTripFromCard = (id) => {
+    const getTripFromCard = async (id) => {
+        const config = await getAuthConfig(getAccessTokenSilently);
         return axiosInstance.get('/card/trip', {
             params: { id: id },
-            headers: {
-                "Authorization": `Bearer ${keycloak.token}`,
-            }
+            ...config
         })
     };
 
-    const getFuelFromCard = (id) => {
+    const getFuelFromCard = async (id) => {
+        const config = await getAuthConfig(getAccessTokenSilently);
         return axiosInstance.get('/card/fuel', {
             params: { id: id },
-            headers: {
-                "Authorization": `Bearer ${keycloak.token}`,
-            }
+            ...config
         })
     };
 
