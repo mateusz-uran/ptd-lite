@@ -10,18 +10,11 @@ import CardSpecification from './component/card/CardSpecification';
 import AddTrip from './component/forms/AddTrip';
 import AddFuel from './component/forms/AddFuel';
 
-import { useAuth0 } from '@auth0/auth0-react';
-
 function App() {
-  const {
-    isLoading,
-    isAuthenticated,
-    loginWithRedirect,
-  } = useAuth0();
 
   const router = createBrowserRouter([
     {
-      path: "/", element: <Navbar isAuthenticated={isAuthenticated} />,
+      path: "/", element: <Navbar  />,
       errorElement: <ErrorPage />,
       children: [
         {
@@ -40,14 +33,8 @@ function App() {
 
     },
   ]);
-
-  if (!isAuthenticated && !isLoading) {
-    return loginWithRedirect();
-  }
-
-  return (
-    <RouterProvider router={router} />
-  )
+  
+  return <RouterProvider router={router}/>;
 }
 
 export default App;

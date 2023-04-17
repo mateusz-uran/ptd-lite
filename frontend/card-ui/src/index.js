@@ -12,7 +12,7 @@ const providerConfig = {
         redirect_uri: window.location.origin,
         audience: 'ptd',
         useRefreshTokens: true,
-        cacheLocation: "localstorage"
+        cacheLocation: "memory"
     },
 };
 

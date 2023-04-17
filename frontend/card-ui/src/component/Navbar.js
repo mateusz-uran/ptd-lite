@@ -10,9 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 
 function Navbar(props) {
-    const navigate = useNavigate();
-    const { isAuthenticated } = props;
-    const { user, logout } = useAuth0();
+    const { user, logout, loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
 
     const [darkMode, setDarkMode] = useState(false);
 
@@ -33,11 +31,6 @@ function Navbar(props) {
         }
     )
 
-    const handleLogout = () => {
-        navigate('/');
-        logout();
-    }
-    
     useEffect(() => {
         let availableTheme = JSON.parse(localStorage.getItem('theme'));
         availableTheme && setDarkMode(availableTheme);
@@ -47,12 +40,19 @@ function Navbar(props) {
         <div className={`${darkMode ? 'dark bg-slate-700' : 'bg-blue-200'}`}>
             <ThemeProvider theme={darkTheme}>
                 <div className='p-4 flex justify-between items-center'>
-                    <div>
+                    <div className='flex'>
                         &nbsp;
+                        {!isAuthenticated && !isLoading &&
+                            <div className='mx-2'>
+                                <Button onClick={() => loginWithRedirect()} variant="contained" sx={{ fontWeight: 'bold' }}>Login</Button>
+                            </div>
+                        }
                     </div>
                     <div className='flex'>
                         <div className='mx-2'>
-                            <Button onClick={() => handleLogout()} variant="contained" sx={{ fontWeight: 'bold' }}>Logout</Button>
+                            {isAuthenticated && !isLoading &&
+                                <Button onClick={() => logout()} variant="contained" sx={{ fontWeight: 'bold' }}>Logout</Button>
+                            }
                         </div>
                         <div className='flex items-center'>
                             <WbSunnyIcon className={darkMode ? 'text-blue-200' : 'text-white'} />
@@ -65,13 +65,14 @@ function Navbar(props) {
                     </div>
                 </div>
                 <Divider sx={{ borderBottomWidth: 2, marginBottom: 0 }} />
-                {isAuthenticated &&
+                {
+                    isAuthenticated &&
                     <div>
                         <CardsList mode={darkMode} user={user.nickname} />
                     </div>
                 }
-            </ThemeProvider>
-        </div>
+            </ThemeProvider >
+        </div >
     );
 }
 
