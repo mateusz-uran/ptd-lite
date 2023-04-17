@@ -37,7 +37,7 @@ function Navbar(props) {
         navigate('/');
         logout();
     }
-
+    
     useEffect(() => {
         let availableTheme = JSON.parse(localStorage.getItem('theme'));
         availableTheme && setDarkMode(availableTheme);

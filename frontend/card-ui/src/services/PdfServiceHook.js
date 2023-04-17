@@ -7,9 +7,10 @@ const usePdfService = () => {
 
     const generatePdf = async (pdfRequest, onUploadProgress) => {
         const config = await getAuthConfig(getAccessTokenSilently);
+        console.log(config)
         return axiosInstance.post("/pdf/generate", pdfRequest, {
             headers: {
-                'Authorization': `Bearer ${config}`
+                'Authorization': config.headers.Authorization
             },
             responseType: "blob",
             onUploadProgress,
