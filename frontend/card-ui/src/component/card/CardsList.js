@@ -55,22 +55,21 @@ function CardsList(props) {
     });
 
 
-    const retrieveCardByUserAndDate = () => {
+    const retrieveCardByUserAndDate = async () => {
         setOpenBackdrop(true);
-        getCards(user, year, month)
-            .then(response => {
-                setCardsList(response.data);
-                setOpenBackdrop(false);
-            }, (error) => {
-                setOpenBackdrop(false);
-                console.log(error);
-                setSnackbarInformation(prevState => ({
-                    ...prevState,
-                    open: true,
-                    type: 'warning',
-                    message: error.response.data.description
-                }))
-            });
+        try {
+            const response = await getCards(user, year, month);
+            setCardsList(response.data);
+            setOpenBackdrop(false);
+        } catch (error) {
+            setOpenBackdrop(false);
+            setSnackbarInformation(prevState => ({
+                ...prevState,
+                open: true,
+                type: 'warning',
+                message: error.response.data.description
+            }));
+        }
     }
 
     const formik = useFormik({
@@ -190,7 +189,7 @@ function CardsList(props) {
                         setMonth={setMonth}
                     />
                 </div>
-                {cardsList && cardsList.length > 0 ? (cardsList.map((card, index) => {
+                {cardsList && cardsList.length > 0 ? (cardsList?.map((card, index) => {
                     return (
                         <div key={index}>
                             <List>
@@ -207,7 +206,6 @@ function CardsList(props) {
                                                     ...prevState,
                                                     confirmation: true,
                                                     cardId: card.id,
-                                                    number: card.number,
                                                     title: 'Delete card number: ',
                                                     subtitle: 'This action cannot be undone.',
                                                     number: card.number,

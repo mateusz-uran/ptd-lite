@@ -1,26 +1,23 @@
-import useAuth from '../api/keycloakHook';
+import { useAuth0 } from '@auth0/auth0-react';
 import axiosInstance from '../api/axiosInstance';
+import { getAuthConfig } from '../api/authToken';
 
 const useTripService = () => {
-    const { keycloak } = useAuth();
+    const { getAccessTokenSilently } = useAuth0();
 
-    const createFixed = (id, trips) => {
+    const createFixed = async (id, trips) => {
+        const config = await getAuthConfig(getAccessTokenSilently);
         return axiosInstance.post('/trip', trips, {
             params: { cardId: id },
-            headers: {
-                "Content-type": "application/json",
-                'Authorization': `Bearer ${keycloak.token}`
-            }
+            ...config
         });
     }
 
-    const deleteManyTrips = (selectedTripId) => {
+    const deleteManyTrips = async (selectedTripId) => {
+        const config = await getAuthConfig(getAccessTokenSilently);
         return axiosInstance.delete("/trip", {
             data: selectedTripId,
-            headers: {
-                "Content-type": "application/json",
-                'Authorization': `Bearer ${keycloak.token}`
-            }
+            ...config
         });
     }
 
