@@ -1,0 +1,15 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: pdf-service
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+pdf:
+  csv:
+    link: https://res.cloudinary.com/dzwnsabwr/raw/upload/v1680370139/user_metadata_yevrow.csv

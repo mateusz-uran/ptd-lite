@@ -12,16 +12,23 @@ logging:
 spring:
   application.name: api-gateway
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/ptd-lite
+
   cloud:
     gateway:
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins: "http://localhost:3000"
-            allowedMethods:
-              - GET
       routes:
         - id: card-service
           uri: lb://card-service
           predicates:
-            - Path=/api/card/**
+            - Path=/api/card/**, /api/trip/**, /api/fuel/**
+
+        - id: pdf-service
+          uri: lb://pdf-service
+          predicates:
+            - Path=/api/pdf/**
+          filters:
+            - ExtractUsername
