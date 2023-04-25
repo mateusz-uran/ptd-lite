@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: card-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: card-service
+  template:
+    metadata:
+      labels:
+        app: card-service
+    spec:
+      containers:
+        - name: app
+          image: mateuszuran/card-service:1.0.0
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+            - name: SPRING_DATASOURCE_USERNAME
+              value: admin
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: psltest
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://10.244.0.65:5432/postgresdb
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: card-service
+spec:
+  selector:
+    app: card-service
+  ports:
+    - port: 9292
+      targetPort: 9292

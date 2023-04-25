@@ -18,6 +18,16 @@ import java.util.List;
 public class CardController {
     private final CardService service;
 
+    @GetMapping("/unsecure")
+    public ResponseEntity<?> getTestCard() {
+        return ResponseEntity.ok().body("Card XYZ");
+    }
+
+    @GetMapping("/secure")
+    public ResponseEntity<?> getTestCards(@RequestParam String username) {
+        return ResponseEntity.ok().body(List.of(username, "Card XYZ"));
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<CardResponse>> getCardsByMonth(
             @RequestParam String username, @RequestParam int year, @RequestParam int month) {
